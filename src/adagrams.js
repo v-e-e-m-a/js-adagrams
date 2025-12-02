@@ -99,6 +99,52 @@ export const scoreWord = (word) => {
 
 };
 
+export const breakTie = (highestScoringWordsList) => {
+  let highestWord = highestScoringWordsList[0];
+  for (let word of highestScoringWordsList.slice(1)) {
+    if (highestWord.length === 10) {
+      continue;
+    } else if (word.length === 10) {
+      highestWord = word;
+    } else if (word.length < highestWord.length) {
+      highestWord = word;
+    };
+  };
+  return highestWord;
+};
+
 export const highestScoreFrom = (words) => {
-  // Implement this method for wave 4
+  let highestWord = '';
+  let highestScore = 0;
+  let wordListScores = [];
+
+  for (let word of words) {
+    let score = scoreWord(word);
+    wordListScores.push([word, score]);
+  }
+
+  for (let [word, score] of wordListScores) {
+    if (score > highestScore) {
+      highestScore = score;
+    }
+  }
+
+  let highestScoringWords = [];
+  for (let [word, score] of wordListScores) {
+    if (score === highestScore) {
+      highestScoringWords.push(word);
+    }
+  }
+
+  if (highestScoringWords.length > 1) {
+    highestWord = breakTie(highestScoringWords);
+  } else {
+    highestWord = highestScoringWords[0];
+  };
+
+  return {
+    word: highestWord,
+    score: highestScore
+  };
+
 };
